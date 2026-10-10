@@ -10,3 +10,12 @@ def prenoms(prenom) :
         "GROUP BY periode ORDER BY periode", conn, params=(prenom))
     conn.close
     return df
+
+def tous_prenoms():
+    conn = get_conn()
+    tuples = conn.execute( " SELECT DISTINCT prenom from prenom ORDER BY prenom" ).fetchall()
+    conn.close()
+    prenoms = []
+    for r in tuples :
+        prenom.append(r[0])
+    return prenoms
