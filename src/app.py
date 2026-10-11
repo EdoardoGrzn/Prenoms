@@ -1,20 +1,35 @@
 import streamlit as st
-from query import prenoms, tous_prenoms
+from queries import prenoms, tous_prenoms, annee_dispo, prenoms_par_annee
 
-st.set_page_config(page_title="Prénoms en France", page_icon="📈", layout="centered")
+st.set_page_config(page_title="Prénoms en France by Edoardo", page_icon="📈", layout="centered")
+tab1, tab2 = st.tabs(["Evolution d'un prénom", "Top 50 des prénoms par année"])
 
-@st.cache_data
-def load_data():
-    return tous_prenoms()
+with tab1 : 
+    @st.cache_data
+    def load_data():
+        return tous_prenoms()
 
-st.title("Evolution des prenoms francais")
-liste_prenoms = load_data()
+    st.title("Evolution des prenoms francais")
+    liste_prenoms = load_data()
 
-prenom = st.selectbox("Entrez le prenom", liste_prenoms, index = None)
+    prenom = st.selectbox("Entrez le prenom", liste_prenoms, index = None)
 
-if prenom : 
-    df = prenoms(prenom)
-    st.line_chart(df, x = "periode", y = "total")
+    if prenom : 
+        df = prenoms(prenom)
+        st.line_chart(df, x = "periode", y = "total")
+
+with tab2 : 
+    @st.cache_data
+    def load_top_prenoms(annee):
+        return prenoms_par_annee(annee)
+
+    st.title("Top 50 des prénoms par année")
+    debut, fin = annee_dispo()
+    annee = st.slider("Année", debut, fin, 2000)
+    df_top = load_top_prenoms(annee)
+
+    st.bar_chart(df_top, x ="prenom", y ="total", x_label="Prénoms", y_label="Nombre de naissance", horizontal=True, sort="-total")
+
 
 st.markdown(
     """

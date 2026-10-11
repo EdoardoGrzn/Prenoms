@@ -19,3 +19,18 @@ def tous_prenoms():
     for r in tuples :
         liste_prenoms.append(r[0])
     return liste_prenoms
+
+def prenoms_par_annee(annee) :
+    conn = get_conn()
+    df = pd.read_sql(
+        " SELECT prenom, SUM(valeur) as total FROM prenom"
+        " WHERE periode = ?"
+        " GROUP BY prenom ORDER BY total DESC LIMIT 50", conn, params=(annee,))
+    conn.close()
+    return df
+
+def annee_dispo() :
+    conn = get_conn()
+    debut, fin = conn.execute(" SELECT MIN(periode), MAX(periode) FROM prenom").fetchone()
+    conn.close()
+    return debut, fin 

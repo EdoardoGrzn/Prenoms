@@ -4,7 +4,15 @@ import pandas as pd #type: ignore
 df = pd.read_csv("data/prenoms-2025-nat.csv", sep=";")
 #df = df[["periode" != "XXXX"]]
 df["periode"] = df["periode"].astype(int)
+df["valeur"] = df["valeur"].astype(int)
 df = df[["prenom", "periode", "valeur"]]
+'''''
+df = df[
+    (df["periode"] >= 1900) & 
+    (df["periode"] <= 2027) &
+    (df["valeur"] >= 0)
+]
+'''''
 
 def get_conn():
     return sqlite3.connect("data/prenom.db")
