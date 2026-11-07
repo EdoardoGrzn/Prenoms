@@ -1,5 +1,5 @@
 import sqlite3
-import pandas as pd
+import pandas as pd #type: ignore
 from build_db import get_conn
 
 def prenoms(prenom) :
