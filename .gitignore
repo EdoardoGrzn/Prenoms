@@ -5,4 +5,4 @@ __pycache__/
 *.pyc
 *.egg-info
 data/prenom.db
-data/prenoms-2025-.csv
+data/prenoms-2025-nat.csv
